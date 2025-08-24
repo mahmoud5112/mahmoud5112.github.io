@@ -76,18 +76,18 @@
 
   <script>
     const allColors = {
-      red: "أحمر",
-      yellow: "أصفر",
-      blue: "أزرق",
-      orange: "برتقالي",
-      pink: "وردي"
+      red: {name: "أحمر", value: "red"},
+      yellow: {name: "أصفر", value: "yellow"},
+      blue: {name: "أزرق", value: "blue"},
+      orange: {name: "برتقالي", value: "#FFA500"},
+      pink: {name: "وردي", value: "pink"}
     };
 
     let intervalId;
 
     function getSelectedColors() {
       const checkboxes = document.querySelectorAll('.color-options input:checked');
-      return Array.from(checkboxes).map(cb => ({value: cb.value, name: allColors[cb.value]}));
+      return Array.from(checkboxes).map(cb => allColors[cb.value]);
     }
 
     function changeColor() {
