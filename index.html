@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مدرب إشارات لونية – ACL</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      transition: background-color 0.5s;
+      text-align: center;
+      direction: rtl;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button, select, input {
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    select, input {
+      background: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="colorName">جاهز؟ اضغط تشغيل</div>
+  
+  <div id="controls">
+    <button onclick="start()">▶ تشغيل</button>
+    <button onclick="stop()">⏸ إيقاف</button>
+    
+    <label>
+      ⏱ زمن (ثواني):
+      <input type="number" id="intervalInput" value="3" min="1" max="10">
+    </label>
+    
+    <label>
+      🎨 عدد الألوان:
+      <select id="colorCount">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+      </select>
+    </label>
+  </div>
+
+  <script>
+    const allColors = [
+      {name: "أحمر", value: "red"},
+      {name: "أخضر", value: "green"},
+      {name: "أزرق", value: "blue"},
+      {name: "أصفر", value: "yellow"},
+      {name: "بنفسجي", value: "purple"}
+    ];
+    let intervalId;
+
+    function changeColor() {
+      const count = parseInt(document.getElementById("colorCount").value);
+      const colors = allColors.slice(0, count);
+      const random = colors[Math.floor(Math.random() * colors.length)];
+      document.body.style.backgroundColor = random.value;
+      document.getElementById("colorName").innerText = random.name;
+    }
+
+    function start() {
+      stop();
+      changeColor();
+      const seconds = parseInt(document.getElementById("intervalInput").value) * 1000;
+      intervalId = setInterval(changeColor, seconds);
+    }
+
+    function stop() {
+      clearInterval(intervalId);
+    }
+  </script>
+</body>
+</html>
