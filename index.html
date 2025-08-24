@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مدرب إشارات لونية – ACL</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      transition: background-color 0.5s;
+      text-align: center;
+      direction: rtl;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button, select, input, label {
+      padding: 10px 15px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    select, input {
+      background: #fff;
+      color: #000;
+    }
+    .color-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .color-options label {
+      font-size: 1rem;
+      background: #fff;
+      color: #000;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="colorName">جاهز؟ اضغط تشغيل</div>
+  
+  <div id="controls">
+    <button onclick="start()">▶ تشغيل</button>
+    <button onclick="stop()">⏸ إيقاف</button>
+    
+    <label>
+      ⏱ زمن (ثواني):
+      <input type="number" id="intervalInput" value="3" min="1" max="10">
+    </label>
+  </div>
+
+  <div class="color-options">
+    <label><input type="checkbox" value="red" checked> أحمر</label>
+    <label><input type="checkbox" value="green" checked> أخضر</label>
+    <label><input type="checkbox" value="blue" checked> أزرق</label>
+    <label><input type="checkbox" value="yellow" checked> أصفر</label>
+    <label><input type="checkbox" value="purple" checked> بنفسجي</label>
+  </div>
+
+  <script>
+    const allColors = {
+      red: "أحمر",
+      green: "أخضر",
+      blue: "أزرق",
+      yellow: "أصفر",
+      purple: "بنفسجي"
+    };
+
+    let intervalId;
+
+    function getSelectedColors() {
+      const checkboxes = document.querySelectorAll('.color-options input:checked');
+      return Array.from(checkboxes).map(cb => ({value: cb.value, name: allColors[cb.value]}));
+    }
+
+    function changeColor() {
+      const colors = getSelectedColors();
+      if (colors.length === 0) {
+        document.getElementById("colorName").innerText = "اختر لون واحد على الأقل!";
+        document.body.style.backgroundColor = "black";
+        return;
+      }
+      const random = colors[Math.floor(Math.random() * colors.length)];
+      document.body.style.backgroundColor = random.value;
+      document.getElementById("colorName").innerText = random.name;
+    }
+
+    function start() {
+      stop();
+      changeColor();
+      const seconds = parseInt(document.getElementById("intervalInput").value) * 1000;
+      intervalId = setInterval(changeColor, seconds);
+    }
+
+    function stop() {
+      clearInterval(intervalId);
+    }
+  </script>
+</body>
+</html>
